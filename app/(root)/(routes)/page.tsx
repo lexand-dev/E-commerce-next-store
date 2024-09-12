@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { useStoreModal } from "@/features/stores/hooks/use-store-modal";
+import { useStoreModal } from "@/hooks/use-store-modal";
 
 const DashboardPage = () => {
   const onOpen = useStoreModal((state) => state.onOpen);
@@ -14,7 +14,7 @@ const DashboardPage = () => {
     }
   }, [isOpen, onOpen]);
 
-  return <div className="p-4">root page</div>;
+  return null;
 };
 
 export default DashboardPage;
