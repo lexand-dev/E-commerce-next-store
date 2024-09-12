@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const stores = pgTable("stores", {
   id: text("id").primaryKey(),
@@ -9,4 +9,4 @@ export const stores = pgTable("stores", {
   updatedAt: timestamp("updatedAt").defaultNow(),
 });
 
-export const insertStoreSchema = createInsertSchema(stores);
+export const insertStoreSchema = createSelectSchema(stores);

@@ -25,7 +25,6 @@ export default async function DashboardLayout({
     })
     .from(stores)
     .where(and(eq(stores.id, params.storeId), eq(stores.userId, userId)));
-  console.log(store);
 
   if (!store) {
     redirect("/");
