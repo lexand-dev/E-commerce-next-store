@@ -68,7 +68,7 @@ export const categoryRelations = relations(category, ({ one }) => ({
   }),
 }));
 
-export const sizes = pgTable(
+export const size = pgTable(
   "size",
   {
     id: text("id").primaryKey().notNull(),
@@ -85,9 +85,9 @@ export const sizes = pgTable(
   })
 );
 
-export const sizeRelations = relations(sizes, ({ one }) => ({
+export const sizeRelations = relations(size, ({ one }) => ({
   store: one(stores, {
-    fields: [sizes.storeId],
+    fields: [size.storeId],
     references: [stores.id],
   }),
 }));
