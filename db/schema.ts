@@ -1,5 +1,5 @@
+import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const stores = pgTable("stores", {
   id: text("id").primaryKey(),
@@ -9,4 +9,22 @@ export const stores = pgTable("stores", {
   updatedAt: timestamp("updatedAt").defaultNow(),
 });
 
-export const insertStoreSchema = createSelectSchema(stores);
+export const storeRelations = relations(stores, ({ many }) => ({
+  billboard: many(billboard),
+}));
+
+export const billboard = pgTable("billboard", {
+  id: text("id"),
+  storeId: text("storeId").references(() => stores.id),
+  label: text("label"),
+  imageUrl: text("imageUrl"),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow(),
+});
+
+export const billboardRelations = relations(billboard, ({ one }) => ({
+  store: one(stores, {
+    fields: [billboard.storeId],
+    references: [stores.id],
+  }),
+}));
