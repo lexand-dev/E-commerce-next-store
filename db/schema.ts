@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const stores = pgTable("stores", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().notNull(),
   name: text("name").notNull(),
   userId: text("userId").notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
-  updatedAt: timestamp("updatedAt").defaultNow(),
+  createdAt: date("createdAt").defaultNow().notNull(),
+  updatedAt: date("updatedAt").defaultNow().notNull(),
 });
 
 export const storeRelations = relations(stores, ({ many }) => ({
@@ -14,12 +14,12 @@ export const storeRelations = relations(stores, ({ many }) => ({
 }));
 
 export const billboard = pgTable("billboard", {
-  id: text("id"),
+  id: text("id").primaryKey().notNull(),
   storeId: text("storeId").references(() => stores.id),
-  label: text("label"),
-  imageUrl: text("imageUrl"),
-  createdAt: timestamp("createdAt").defaultNow(),
-  updatedAt: timestamp("updatedAt").defaultNow(),
+  label: text("label").notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  createdAt: date("createdAt").defaultNow().notNull(),
+  updatedAt: date("updatedAt").defaultNow().notNull(),
 });
 
 export const billboardRelations = relations(billboard, ({ one }) => ({
