@@ -67,3 +67,27 @@ export const categoryRelations = relations(category, ({ one }) => ({
     references: [billboard.id],
   }),
 }));
+
+export const sizes = pgTable(
+  "size",
+  {
+    id: text("id").primaryKey().notNull(),
+    storeId: text("storeId")
+      .notNull()
+      .references(() => stores.id),
+    name: text("name").notNull(),
+    value: text("value").notNull(),
+    createdAt: date("createdAt").defaultNow().notNull(),
+    updatedAt: date("updatedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    storeIdIdx: index("storeId_idx").on(table.storeId),
+  })
+);
+
+export const sizeRelations = relations(sizes, ({ one }) => ({
+  store: one(stores, {
+    fields: [sizes.storeId],
+    references: [stores.id],
+  }),
+}));

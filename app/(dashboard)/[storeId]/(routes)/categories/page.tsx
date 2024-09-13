@@ -9,18 +9,18 @@ import { CategoryClient } from "./components/client";
 import { CategoryColumn } from "./components/columns";
 
 const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
-  const categories = await db
-    .select()
-    .from(category)
-    .where(eq(category.storeId, params.storeId))
-    .leftJoin(billboard, eq(category.billboardId, billboard.id))
-    .orderBy(desc(category.createdAt));
+  const categories = await db.query.category.findMany({
+    with: {
+      store: true,
+      billboard: true,
+    },
+  });
 
   const formattedCategories: CategoryColumn[] = categories.map((item) => ({
-    id: item.category.id,
-    name: item.category.name,
-    billboardLabel: item.billboard?.label,
-    createdAt: format(item.category.createdAt, "MMMM do, yyyy"),
+    id: item.id,
+    name: item.name,
+    billboardLabel: item.billboard.label,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
 
   return (
