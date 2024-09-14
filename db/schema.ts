@@ -1,13 +1,5 @@
 import { relations } from "drizzle-orm";
-import {
-  char,
-  date,
-  index,
-  pgTable,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { date, index, pgTable, text } from "drizzle-orm/pg-core";
 
 export const stores = pgTable("stores", {
   id: text("id").primaryKey().notNull(),
@@ -88,6 +80,24 @@ export const size = pgTable(
 export const sizeRelations = relations(size, ({ one }) => ({
   store: one(stores, {
     fields: [size.storeId],
+    references: [stores.id],
+  }),
+}));
+
+export const color = pgTable("color", {
+  id: text("id").primaryKey().notNull(),
+  storeId: text("storeId")
+    .notNull()
+    .references(() => stores.id),
+  name: text("name").notNull(),
+  value: text("value").notNull(),
+  createdAt: date("createdAt").defaultNow().notNull(),
+  updatedAt: date("updatedAt").defaultNow().notNull(),
+});
+
+export const colorRelations = relations(color, ({ one }) => ({
+  store: one(stores, {
+    fields: [color.storeId],
     references: [stores.id],
   }),
 }));
